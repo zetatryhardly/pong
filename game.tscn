@@ -1,0 +1,93 @@
+[gd_scene load_steps=9 format=3 uid="uid://du1mbpwxbr8i0"]
+
+[ext_resource type="Script" uid="uid://kbg342kxqatw" path="res://game.gd" id="1_7jktm"]
+[ext_resource type="PackedScene" uid="uid://bpb1g53n8bljr" path="res://border.tscn" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://c7y2ho38xkjnd" path="res://paddle.tscn" id="2_feb5d"]
+[ext_resource type="PackedScene" uid="uid://dyi0lhayuwbr7" path="res://ball.tscn" id="3_fc0e3"]
+[ext_resource type="PackedScene" uid="uid://dlsojbu3b0pui" path="res://paddle2.tscn" id="4_fc0e3"]
+[ext_resource type="Script" uid="uid://fhu7hgpnqdyv" path="res://player_score.gd" id="6_eow3j"]
+[ext_resource type="Script" uid="uid://boyyqviv13upe" path="res://ai_score.gd" id="7_j5wjh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7jktm"]
+size = Vector2(18, 610)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_7jktm")
+
+[node name="UpperBorder" parent="." instance=ExtResource("1_80nbo")]
+position = Vector2(0, 8)
+
+[node name="BottomBorder" parent="." instance=ExtResource("1_80nbo")]
+position = Vector2(0, 600)
+rotation = 3.14159
+
+[node name="Paddle" parent="." instance=ExtResource("2_feb5d")]
+position = Vector2(20, 300)
+
+[node name="Ball" parent="." instance=ExtResource("3_fc0e3")]
+position = Vector2(50, 300)
+
+[node name="Paddle2" parent="." instance=ExtResource("4_fc0e3")]
+position = Vector2(780, 300)
+
+[node name="LoseArea" type="Area2D" parent="."]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LoseArea"]
+position = Vector2(-1, 295)
+shape = SubResource("RectangleShape2D_7jktm")
+
+[node name="WinArea" type="Area2D" parent="."]
+position = Vector2(800, 8)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WinArea"]
+position = Vector2(-1, 295)
+shape = SubResource("RectangleShape2D_7jktm")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="MarginContainer" parent="CanvasLayer"]
+offset_left = 701.0
+offset_top = 8.0
+offset_right = 773.0
+offset_bottom = 70.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI"]
+layout_mode = 2
+
+[node name="PlayerScore" type="Label" parent="CanvasLayer/UI/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_eow3j")
+
+[node name="separator" type="Label" parent="CanvasLayer/UI/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "-"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AIScore" type="Label" parent="CanvasLayer/UI/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("7_j5wjh")
+
+[connection signal="game_end" from="." to="Ball" method="_on_game_game_end"]
+[connection signal="game_end" from="." to="CanvasLayer/UI/HBoxContainer/PlayerScore" method="_on_game_game_end"]
+[connection signal="game_end" from="." to="CanvasLayer/UI/HBoxContainer/AIScore" method="_on_game_game_end"]
+[connection signal="game_start" from="." to="Ball" method="_on_game_game_start"]
+[connection signal="game_start" from="." to="Paddle2" method="_on_game_game_start"]
+[connection signal="body_entered" from="Ball" to="." method="_on_ball_body_entered"]
+[connection signal="body_entered" from="LoseArea" to="." method="_on_lose_area_body_entered"]
+[connection signal="body_entered" from="WinArea" to="." method="_on_win_area_body_entered"]

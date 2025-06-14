@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://dlsojbu3b0pui"]
+
+[ext_resource type="Script" uid="uid://c6xudi8l3p5hi" path="res://paddle_2.gd" id="1_vyaca"]
+[ext_resource type="Texture2D" uid="uid://ddpiqx4xh7j3b" path="res://paddle.png" id="2_qer5g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tbytw"]
+size = Vector2(16, 150)
+
+[node name="Paddle2" type="StaticBody2D"]
+script = ExtResource("1_vyaca")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_qer5g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tbytw")
